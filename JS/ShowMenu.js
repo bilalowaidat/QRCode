@@ -1,5 +1,6 @@
 var CoverPage = false;
 var Logo = true;
+var order = [];
 
 function ShowConfiguration(){
 	var t = "<table>";
@@ -14,9 +15,27 @@ function ShowConfiguration(){
 		t = t + "<tr><td style='width:100%;text-align:center'><p style='font-size:20px;font-weight:bold'>" + Configuration.Phone + "</p></td></tr>";
 	}
 		
-	t = t + "<tr><td style='width:100%;text-align:center'><a href='" + Configuration.Whatsapp + "' target='_blank'><img src='./Img/Whatsapp.png' width=40 height=40></a>&nbsp;&nbsp;&nbsp;<a href='" + Configuration.Facebook + "' target='_blank'><img src='./Img/Facebook.png' width=40 height=40></a>&nbsp;&nbsp;&nbsp;<a href='" + Configuration.Instagram + "' target='_blank'><img src='./Img/Instagram.png' width=40 height=40></a>&nbsp;&nbsp;&nbsp;<a href='" + Configuration.Tiktok + "' target='_blank'><img src='./Img/Tiktok.png' width=40 height=40></a>&nbsp;&nbsp;&nbsp;<a href='" + Configuration.GoogleMaps + "' target='_blank'><img src='./Img/GoogleMaps.png' width=40 height=40></a></td></tr>";
+	t = t + "<tr><td style='width:100%;text-align:center'><a href='" + Configuration.Whatsapp + "' target='_blank'><img src='./Img/Whatsapp.png' width=40 height=40></a>&nbsp;&nbsp;&nbsp;<a href='" + Configuration.Facebook + "' target='_blank'><img src='./Img/Facebook.png' width=40 height=40></a>&nbsp;&nbsp;&nbsp;<a href='" + Configuration.Instagram + "' target='_blank'><img src='./Img/Instagram.png' width=40 height=40></a>&nbsp;&nbsp;&nbsp;<a href='" + Configuration.Tiktok + "' target='_blank'><img src='./Img/Tiktok.png' width=40 height=40></a>&nbsp;&nbsp;&nbsp;<a href='" + Configuration.GoogleMaps + "' target='_blank'><img src='./Img/GoogleMaps.png' width=40 height=40></a>&nbsp;&nbsp;&nbsp;<a href='javascript:void(0)' onclick='Delivery()'><img src='./Img/Delivery.png' width=40 height=40></a></td></tr>";
 	t = t + "</table>";
 	document.getElementById('Configuration').innerHTML=t;
+};
+
+function Delivery() {
+	if (order.length === 0)
+		alert ("No items added to your order");
+	else {
+		var response = confirm("Send Order:\n-----------------------------------------------------------------------------\n" + order.join("\n"));
+    	if (response == true) {
+        	var CustomerName = prompt("Please enter your name:");
+			var CustomerAddress = prompt("Please enter your address:");
+			var text = encodeURIComponent(CustomerName + "\n" + CustomerAddress + "\n\n" + order.join("\n"));
+			var link = document.createElement('a');
+			link.href = Configuration.Whatsapp + "?text=" + text;
+			link.click();
+		}
+		else
+			alert("Operation Cancelled");
+	}
 };
 
 function ShowAllPOS() {
@@ -133,17 +152,41 @@ function ShowItems(CategoryID) {
 	var ItemsLength = Items.length;
 	var t = "<table style='width:100%;margin-bottom:40px;'><tr><td style='width:100%;text-align:left;'><p style='font-size:24px;font-weight:bold;color:Red;'>" + CategoriesAndItems[CategoryID].Category + "</p></td><td style='width:100%;text-align:right;'><img src='./Img/Back.png' width=40 height=40 onclick='BackButton()'></td></tr></table>";
 	for (var i = 0; i < ItemsLength; i++)
-		t = t + "<table style='width:100%;margin-bottom:40px;'><tr><td style='width:40%;text-align:center;border:solid;'><img src='" + Items[i].ItemOnlinePicture + "' width=100%></td><td style='width:60%;text-align:center;border:solid;padding:10px 10px 10px 10px;'>" + (Items[i].Recommended == "False"?"":"<p><span style='font-size:20px;color:Red;'>&#9733&#9733&#9733 Popular &#9733&#9733&#9733</span></p>") + "<p style='font-size:14px;color:Blue;'>" + Items[i].Barcode + "</p><p style='font-size:18px;font-weight:bold;'>" + Items[i].Item + "</p><p><span style='color:gray;font-size:16px;'>" + Items[i].Description + "</span></p><p><span style='color:green;font-size:18px;font-weight:bold;'>" + Items[i].Price + "</span><span style='color:green;font-size:18px;font-weight:bold;padding-left:5px'>" + Items[i].Currency + "</span></p></td></tr></table>";
+		t = t + "<table style='width:100%;margin-bottom:40px;'><tr><td style='width:40%;text-align:center;border:solid;'><img src='" + Items[i].ItemOnlinePicture + "' width=100%></td><td style='width:60%;text-align:center;border:solid;padding:10px 10px 10px 10px;'>" + (Items[i].Recommended == "False"?"":"<p><span style='font-size:20px;color:Red;'>&#9733&#9733&#9733 Popular &#9733&#9733&#9733</span></p>") + "<p style='font-size:14px;color:Blue;'>" + Items[i].Barcode + "</p><p style='font-size:18px;font-weight:bold;'>" + Items[i].Item + "</p><p><span style='color:gray;font-size:16px;'>" + Items[i].Description + "</span></p><p><span style='color:green;font-size:18px;font-weight:bold;'>" + Items[i].Price + "</span><span style='color:green;font-size:18px;font-weight:bold;padding-left:5px'>" + Items[i].Currency + "</span></p><p><img id='" + Items[i].Item + "' src='Img/OrderRemove.png' width=20% onclick='RemoveFromOrder(this.id)'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img id='" + Items[i].Item + "' src='Img/OrderAdd.png' width=20% onclick='AddToOrder(this.id)'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src='Img/OrderView.png' width=20% onclick='ShowOrder()'></p></td></tr></table>";
 	t = t + "<table style='width:100%;margin-bottom:20px;'><tr><td style='width:40%;text-align:center;border:none;'><img src='./Img/Back.png' width=80 height=80 onclick='BackButton()'></td></tr></table>";	
 	document.getElementById('tblCategories').style.display = "None";
 	document.getElementById('tblItems').innerHTML = t;
 	document.getElementById('tblItems').style.display = "table";
 	scroll(0,0);
-}
+};
+
+function AddToOrder(Item) {
+    var response = confirm("Add " + Item + " to your order?");
+    if (response == true)
+        order.push(Item);
+	else
+		alert("Operation Cancelled");
+};
+
+function RemoveFromOrder(Item) {
+   	const index = order.indexOf(Item);
+	if (index !== -1) {
+		var response = confirm("Remove " + Item + " from your order?");
+		if (response == true)
+			order.splice(index, 1);
+		else
+			alert("Operation Cancelled");
+	}
+};
+
+function ShowOrder() {
+    alert("Order Details:\n-----------------------------------------------------------------------------\n" + order.join("\n"));
+};
+
 
 function BackButton(){
 	document.getElementById('tblCategories').style.display = "table";
 	document.getElementById('tblItems').style.display = "None";
 	scroll(0,0);
-}
+};
 
