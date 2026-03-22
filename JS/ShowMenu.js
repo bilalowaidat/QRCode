@@ -1,42 +1,18 @@
-var CoverPage = false;
-var Logo = true;
+var lowerpart = "";
+var firsttime = true;
 var order = [];
 
 function ShowConfiguration(){
 	var t = "<table>";
-	if (CoverPage)
-		t = t + "<tr><td style='width:100%;text-align:center'><img src='./Img/CoverPage.jpg' width='100%'></td></tr>";
-	else {
-		if (Logo)
-			t = t + "<tr><td style='width:100%;text-align:center'><img src='./Img/Logo.jpg' width='120' height='120'></td></tr>";
-		t = t + "<tr><td style='width:100%;text-align:center'><p style='font-size:20px;font-weight:bold'>" + Configuration.Name + "</p></td></tr>";
-		t = t + "<tr><td style='width:100%;text-align:center'><p style='font-size:20px;font-weight:bold'>" + Configuration.Description + "</p></td></tr>";
-		t = t + "<tr><td style='width:100%;text-align:center'><p style='font-size:20px;font-weight:bold'>" + Configuration.Address + "</p></td></tr>";
-		t = t + "<tr><td style='width:100%;text-align:center'><p style='font-size:20px;font-weight:bold'>" + Configuration.Phone + "</p></td></tr>";
-	}
-		
-	t = t + "<tr><td style='width:100%;text-align:center'><a href='" + Configuration.Whatsapp + "' target='_blank'><img src='./Img/Whatsapp.png' width=40 height=40></a>&nbsp;&nbsp;&nbsp;<a href='" + Configuration.Facebook + "' target='_blank'><img src='./Img/Facebook.png' width=40 height=40></a>&nbsp;&nbsp;&nbsp;<a href='" + Configuration.Instagram + "' target='_blank'><img src='./Img/Instagram.png' width=40 height=40></a>&nbsp;&nbsp;&nbsp;<a href='" + Configuration.Tiktok + "' target='_blank'><img src='./Img/Tiktok.png' width=40 height=40></a>&nbsp;&nbsp;&nbsp;<a href='" + Configuration.GoogleMaps + "' target='_blank'><img src='./Img/GoogleMaps.png' width=40 height=40></a>&nbsp;&nbsp;&nbsp;<a href='javascript:void(0)' onclick='Delivery()'><img src='./Img/Delivery.png' width=40 height=40></a></td></tr>";
+	t = t + "<tr><td style='width:100%;text-align:center'><img src='./Img/Logo.jpg' width='150' height='100'></td></tr>";
+	t = t + "<tr><td style='width:100%;text-align:center'><p style='font-size:18px;font-weight:bold'>" + Configuration.Name + "</p></td></tr>";
+	t = t + "<tr><td style='width:100%;text-align:center'><p style='font-size:18px;font-weight:bold'>" + Configuration.Description + "</p></td></tr>";
+	t = t + "<tr><td style='width:100%;text-align:center'><p style='font-size:18px;font-weight:bold'>" + Configuration.Address + "</p></td></tr>";
+	t = t + "<tr><td style='width:100%;text-align:center'><p style='font-size:18px;font-weight:bold'>" + Configuration.Phone + "</p></td></tr>";
+	t = t + "<tr><td style='width:100%;text-align:center'><a href='" + Configuration.Whatsapp + "' target='_blank'><img src='./Img/Whatsapp.png' width=40 height=40></a>&nbsp;&nbsp;&nbsp;<a href='" + Configuration.Facebook + "' target='_blank'><img src='./Img/Facebook.png' width=40 height=40></a>&nbsp;&nbsp;&nbsp;<a href='" + Configuration.Instagram + "' target='_blank'><img src='./Img/Instagram.png' width=40 height=40></a>&nbsp;&nbsp;&nbsp;<a href='" + Configuration.Tiktok + "' target='_blank'><img src='./Img/Tiktok.png' width=40 height=40></a>&nbsp;&nbsp;&nbsp;<a href='" + Configuration.GoogleMaps + "' target='_blank'><img src='./Img/GoogleMaps.png' width=40 height=40></a></td></tr>";
 	t = t + "</table>";
 	document.getElementById('Configuration').innerHTML=t;
-};
-
-function Delivery() {
-	if (order.length === 0)
-		alert ("No items added to your order");
-	else {
-		var response = confirm("Send Order:\n-----------------------------------------------------------------------------\n" + order.join("\n"));
-    	if (response == true) {
-        	var CustomerName = prompt("Please enter your name:");
-			var CustomerAddress = prompt("Please enter your address:");
-			var text = encodeURIComponent(CustomerName + "\n" + CustomerAddress + "\n\n" + order.join("\n"));
-			var link = document.createElement('a');
-			link.href = Configuration.Whatsapp + "?text=" + text;
-			link.click();
-		}
-		else
-			alert("Operation Cancelled");
-	}
-};
+}
 
 function ShowAllPOS() {
 	ShowConfiguration();
@@ -54,7 +30,7 @@ function ShowAllPOS() {
 	}
 	t = t + "</table>";
 	document.getElementById('tblCategoriesAndItems').innerHTML=t;
-};
+}
 
 function ShowFilteredDescription(e,Search_Value) {
 	var CategoriesAndItemsLength = CategoriesAndItems.length;
@@ -94,7 +70,7 @@ function ShowFilteredDescription(e,Search_Value) {
 		document.getElementById('txtSearchDescription').value="";
 		document.getElementById('txtSearchBarcode').value="";
 	}
-};
+}
 
 function ShowFilteredBarcode(e,Search_Value) {
 	if (e.keyCode !=13)
@@ -124,69 +100,205 @@ function ShowFilteredBarcode(e,Search_Value) {
 	document.getElementById('tblCategoriesAndItems').innerHTML=t;
 	document.getElementById('txtSearchDescription').value="";
 	document.getElementById('txtSearchBarcode').value="";
-};
+}
+
+function ToggleCart() {
+    var upper = document.getElementById('upperpart');
+    var lower = document.getElementById('lowerpart');
+    
+    // Toggle the CSS classes
+    upper.classList.toggle('expanded-upper');
+    lower.classList.toggle('minimized-lower');
+}
 
 function ShowAllRestaurant() {
-	ShowConfiguration();
-	var CategoriesAndItemsLength = CategoriesAndItems.length;
-	var t = "";
-	for (var i = 0; i < CategoriesAndItemsLength; i=i+2)
-		if (i+1 < CategoriesAndItemsLength){
-			t = t + "<tr><td style='width:45%;text-align:center;'><img id=" + i + " src='" + CategoriesAndItems[i].CategoryOnlinePicture + "' width=100% onclick='ShowItems(this.id)'></td><td style='width:10%;'>&nbsp;</td><td style='width:45%;text-align:center;'><img id=" + (i+1) + " src='" + CategoriesAndItems[i+1].CategoryOnlinePicture + "' width=100% onclick='ShowItems(this.id)'></td></tr>";
-			t = t + "<tr><td style='width:45%;text-align:center;'><p id=" + i + " style='font-size:20px;font-weight:bold;' onclick='ShowItems(this.id)'>" + CategoriesAndItems[i].Category + "</p></td><td style='width:10%;'>&nbsp;</td><td style='width:45%;text-align:center;'><p id=" + (i+1) + " style='font-size:20px;font-weight:bold;' onclick='ShowItems(this.id)'>" + CategoriesAndItems[i+1].Category + "</p></td></tr>";
-			t = t + "<tr><td>&nbsp</td></tr>";
-		}
-		else{
-			t = t + "<tr><td style='width:45%;text-align:center;'><img id=" + i + " src='" + CategoriesAndItems[i].CategoryOnlinePicture + "' width=100% onclick='ShowItems(this.id)'></td></tr>";
-			t = t + "<tr><td style='width:45%;text-align:center;'><p id=" + i + " style='font-size:20px;font-weight:bold;' onclick='ShowItems(this.id)'>" + CategoriesAndItems[i].Category + "</p></td></tr>";
-			t = t + "<tr><td>&nbsp</td></tr>";
-		}
-	document.getElementById('tblCategories').innerHTML = t;
-	document.getElementById('tblCategories').style.display = "table";
-	document.getElementById('tblItems').innerHTML = "<table style='width:100%;margin-bottom:40px;'><tr><td style='width:100%;text-align:left;'><p style='font-size:24px;font-weight:bold;color:Red;'>Category</p></td><td style='width:100%;text-align:right;'><img src='./Img/Back.png' width=40 height=40 onclick='BackButton()'></td></tr></table>";
-	document.getElementById('tblItems').style.display = "None";
-};
+	if (!firsttime)
+		var wasMinimized = document.getElementById('lowerpart').classList.contains('minimized-lower');
+    var CategoriesAndItemsLength = CategoriesAndItems.length;
+	var upperpart = "<div id='upperpart' style='flex: 0 0 65%; height: 65%; overflow-y: auto; border-bottom: 2px solid #ddd; box-sizing: border-box;'>";
+    upperpart += "<div style='flex: 1; overflow-y: auto; padding: 10px;'>";
+	
+	// Show Configuration
+	upperpart += "<table style='width:100%'>";
+	upperpart += "<tr><td style='width:100%;text-align:center'><img src='./Img/Logo.jpg' width='150' height='100'></td></tr>";
+	upperpart += "<tr><td style='width:100%;text-align:center'><p style='font-size:18px;font-weight:bold'>" + Configuration.Name + "</p></td></tr>";
+	upperpart += "<tr><td style='width:100%;text-align:center'><p style='font-size:18px;font-weight:bold'>" + Configuration.Description + "</p></td></tr>";
+	upperpart += "<tr><td style='width:100%;text-align:center'><p style='font-size:18px;font-weight:bold'>" + Configuration.Address + "</p></td></tr>";
+	upperpart += "<tr><td style='width:100%;text-align:center'><p style='font-size:18px;font-weight:bold'>" + Configuration.Phone + "</p></td></tr>";
+	upperpart += "<tr><td style='width:100%;text-align:center'><a href='" + Configuration.Whatsapp + "' target='_blank'><img src='./Img/Whatsapp.png' width=40 height=40></a>&nbsp;&nbsp;&nbsp;<a href='" + Configuration.Facebook + "' target='_blank'><img src='./Img/Facebook.png' width=40 height=40></a>&nbsp;&nbsp;&nbsp;<a href='" + Configuration.Instagram + "' target='_blank'><img src='./Img/Instagram.png' width=40 height=40></a>&nbsp;&nbsp;&nbsp;<a href='" + Configuration.Tiktok + "' target='_blank'><img src='./Img/Tiktok.png' width=40 height=40></a>&nbsp;&nbsp;&nbsp;<a href='" + Configuration.GoogleMaps + "' target='_blank'><img src='./Img/GoogleMaps.png' width=40 height=40></a></td></tr>";
+	upperpart += "</table>";
+
+	// Show Categories
+    upperpart += "<table style='width:100%; border-collapse: collapse;margin-top:30px;'>";
+    for (var i = 0; i < CategoriesAndItemsLength; i = i + 2) {
+        if (i + 1 < CategoriesAndItemsLength) {
+            upperpart += "<tr>";
+            upperpart += "<td style='width:45%;text-align:center;'><img id='" + i + "' src='" + CategoriesAndItems[i].CategoryOnlinePicture + "' width='100%' onclick='ShowItems(this.id)'></td>";
+            upperpart += "<td style='width:10%;'>&nbsp;</td>";
+            upperpart += "<td style='width:45%;text-align:center;'><img id='" + (i + 1) + "' src='" + CategoriesAndItems[i+1].CategoryOnlinePicture + "' width='100%' onclick='ShowItems(this.id)'></td>";
+            upperpart += "</tr>";
+            
+            upperpart += "<tr>";
+            upperpart += "<td style='text-align:center;'><p style='font-size:20px;font-weight:bold;cursor:pointer' id='" + i + "' onclick='ShowItems(this.id)'>" + CategoriesAndItems[i].Category + "</p></td>";
+            upperpart += "<td>&nbsp;</td>";
+            upperpart += "<td style='text-align:center;'><p style='font-size:20px;font-weight:bold;cursor:pointer' id='" + (i + 1) + "' onclick='ShowItems(this.id)'>" + CategoriesAndItems[i+1].Category + "</p></td>";
+            upperpart += "</tr>";
+            upperpart += "<tr><td colspan='3'>&nbsp;</td></tr>";
+        } else {
+            upperpart += "<tr>";
+            upperpart += "<td style='width:45%;text-align:center;'><img id='" + i + "' src='" + CategoriesAndItems[i].CategoryOnlinePicture + "' width='100%' onclick='ShowItems(this.id)'></td>";
+            upperpart += "<td>&nbsp;</td><td>&nbsp;</td>";
+            upperpart += "</tr>";
+            upperpart += "<tr>";
+            upperpart += "<td style='text-align:center;'><p style='font-size:20px;font-weight:bold;cursor:pointer' id='" + i + "' onclick='ShowItems(this.id)'>" + CategoriesAndItems[i].Category + "</p></td>";
+            upperpart += "</tr>";
+        }
+    }
+    upperpart += "</table>";
+    upperpart += "</div>";
+	upperpart += "</div>";
+
+	// Show the current order
+	lowerpart = "<div id='lowerpart' style='flex: 0 0 35%; height: 35%; display: flex; flex-direction: column; background: #f9f9f9; box-sizing: border-box; overflow: hidden; border-top: 2px solid #ccc;'>";
+
+	// The Handle Bar (Click this to minimize/maximize)
+	lowerpart += "<div onclick='ToggleCart()' style='width:100%; height:30px; background:#eee; display:flex; justify-content:center; align-items:center; cursor:pointer; border-bottom:1px solid #ddd;'>";
+	lowerpart += "<div style='width:40px; height:5px; background:#999; border-radius:10px;'></div>";
+	lowerpart += "</div>";
+
+	// The scrolling area
+	lowerpart += "<div style='flex: 1; overflow-y: auto; padding: 0px 10px 10px 10px;'>";
+	lowerpart += "<table id='tblOrderInfo' style='width:100%; border-collapse: separate; border-spacing: 0 5px;'><tbody></tbody></table>";
+	lowerpart += "</div>";
+
+	// The Process Button area
+	lowerpart += "<div style='padding: 10px; border-top: 1px solid #ddd; background: white; text-align: center; flex-shrink: 0;'>";
+	lowerpart += "<img src='./Img/ProcessOrder.png' width=80 height=80 style='cursor:pointer;' onclick='ProcessOrder()'>";
+	lowerpart += "</div>";
+	lowerpart += "</div>";
+
+	document.getElementById('maindiv').innerHTML = upperpart + lowerpart;
+	RenderOrderTable();
+	if (firsttime) {
+		firsttime = false;
+		document.getElementById('upperpart').classList.add('expanded-upper');
+        document.getElementById('lowerpart').classList.add('minimized-lower');
+	}
+	else if (wasMinimized) {
+        document.getElementById('upperpart').classList.add('expanded-upper');
+        document.getElementById('lowerpart').classList.add('minimized-lower');
+    } else {
+        document.getElementById('upperpart').classList.remove('expanded-upper');
+        document.getElementById('lowerpart').classList.remove('minimized-lower');
+    }
+}
 
 function ShowItems(CategoryID) {
-	var Items = CategoriesAndItems[CategoryID].Items;
-	var ItemsLength = Items.length;
-	var t = "<table style='width:100%;margin-bottom:40px;'><tr><td style='width:100%;text-align:left;'><p style='font-size:24px;font-weight:bold;color:Red;'>" + CategoriesAndItems[CategoryID].Category + "</p></td><td style='width:100%;text-align:right;'><img src='./Img/Back.png' width=40 height=40 onclick='BackButton()'></td></tr></table>";
-	for (var i = 0; i < ItemsLength; i++)
-		t = t + "<table style='width:100%;margin-bottom:40px;'><tr><td style='width:40%;text-align:center;border:solid;'><img src='" + Items[i].ItemOnlinePicture + "' width=100%></td><td style='width:60%;text-align:center;border:solid;padding:10px 10px 10px 10px;'>" + (Items[i].Recommended == "False"?"":"<p><span style='font-size:20px;color:Red;'>&#9733&#9733&#9733 Popular &#9733&#9733&#9733</span></p>") + "<p style='font-size:14px;color:Blue;'>" + Items[i].Barcode + "</p><p style='font-size:18px;font-weight:bold;'>" + Items[i].Item + "</p><p><span style='color:gray;font-size:16px;'>" + Items[i].Description + "</span></p><p><span style='color:green;font-size:18px;font-weight:bold;'>" + Items[i].Price + "</span><span style='color:green;font-size:18px;font-weight:bold;padding-left:5px'>" + Items[i].Currency + "</span></p><p><img id='" + Items[i].Item + "' src='Img/OrderRemove.png' width=20% onclick='RemoveFromOrder(this.id)'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img id='" + Items[i].Item + "' src='Img/OrderAdd.png' width=20% onclick='AddToOrder(this.id)'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src='Img/OrderView.png' width=20% onclick='ShowOrder()'></p></td></tr></table>";
-	t = t + "<table style='width:100%;margin-bottom:20px;'><tr><td style='width:40%;text-align:center;border:none;'><img src='./Img/Back.png' width=80 height=80 onclick='BackButton()'></td></tr></table>";	
-	document.getElementById('tblCategories').style.display = "None";
-	document.getElementById('tblItems').innerHTML = t;
-	document.getElementById('tblItems').style.display = "table";
-	scroll(0,0);
-};
-
-function AddToOrder(Item) {
-    var response = confirm("Add " + Item + " to your order?");
-    if (response == true)
-        order.push(Item);
-	else
-		alert("Operation Cancelled");
-};
-
-function RemoveFromOrder(Item) {
-   	const index = order.indexOf(Item);
-	if (index !== -1) {
-		var response = confirm("Remove " + Item + " from your order?");
-		if (response == true)
-			order.splice(index, 1);
-		else
-			alert("Operation Cancelled");
+	var wasMinimized = document.getElementById('lowerpart').classList.contains('minimized-lower');
+    var Items = CategoriesAndItems[CategoryID].Items;
+    var upperpart2 = "<div id='upperpart' style='flex: 0 0 65%; height: 65%; overflow-y: auto; border-bottom: 2px solid #ddd; box-sizing: border-box;'>";
+	upperpart2 += "<div style='flex: 1; overflow-y: auto; padding: 10px;'>";
+	upperpart2 += "<table style='width:100%;margin-bottom:20px;'><tr><td style='text-align:left;'><p style='font-size:26px;font-weight:bold;color:Red;margin:0;'>" + CategoriesAndItems[CategoryID].Category + "</p></td><td style='text-align:right;'><img src='./Img/Back.png' width=40 height=40 style='cursor:pointer;' onclick='BackButton()'></td></tr></table>";
+	upperpart2 += "<table style='width:100%; border-collapse:collapse; margin-bottom:20px; background:white;'>"
+	for (var i = 0; i < Items.length; i++) {
+		var safeName = Items[i].Item.replace(/'/g, "\\'");
+		var safePrice = (Items[i].Price + " " + Items[i].Currency).replace(/'/g, "\\'");
+		upperpart2 += "<tr><td style='width:40%; text-align:center; border:1px solid #ccc;'><img src='" + Items[i].ItemOnlinePicture + "' style='width:100%;'></td><td style='width:60%; text-align:center; border:1px solid #ccc; padding:15px;'>" + (Items[i].Recommended == "False" ? "" : "<p><span style='font-size:18px; color:Red;'>&#9733;&#9733;&#9733; Popular &#9733;&#9733;&#9733;</span></p>") + "<p style='font-size:14px; color:Blue;'>" + Items[i].Barcode + "</p><p style='font-size:20px; font-weight:bold;'>" + safeName + "</p><p><span style='color:gray; font-size:16px;'>" + Items[i].Description + "</span></p><p><span style='color:green; font-size:20px; font-weight:bold;'>" + safePrice + "</span></p><p><img src='Img/AddItem.png' width='50' style='cursor:pointer;' onclick=\"AddItem('" + safeName + "', '" + safePrice + "')\"></p></td></tr>";
 	}
-};
+    upperpart2 += "</table>";
+	upperpart2 += "</div>";
+	upperpart2 += "</div>";
+	document.getElementById('maindiv').innerHTML = upperpart2 + lowerpart;
+	RenderOrderTable();
+	if (wasMinimized) {
+        document.getElementById('upperpart').classList.add('expanded-upper');
+        document.getElementById('lowerpart').classList.add('minimized-lower');
+    } else {
+        document.getElementById('upperpart').classList.remove('expanded-upper');
+        document.getElementById('lowerpart').classList.remove('minimized-lower');
+    }
+    scroll(0,0);
+}
 
-function ShowOrder() {
-    alert("Order Details:\n-----------------------------------------------------------------------------\n" + order.join("\n"));
-};
+function AddItem(name, priceWithCurrency) {
+	order.push({ name: name, price: priceWithCurrency });
+	var lower = document.getElementById('lowerpart');
+    if (lower && lower.classList.contains('minimized-lower')) {
+        ToggleCart();
+    }
+    RenderOrderTable();
+}
 
+function RemoveItem(index) {
+    order.splice(index, 1);
+    RenderOrderTable();
+}
 
-function BackButton(){
-	document.getElementById('tblCategories').style.display = "table";
-	document.getElementById('tblItems').style.display = "None";
-	scroll(0,0);
-};
+function RenderOrderTable() {
+    const table = document.getElementById('tblOrderInfo');
+    if (!table) return;
+
+    const tbody = table.querySelector('tbody');
+    tbody.innerHTML = ""; 
+
+    for (var i = order.length - 1; i >= 0; i--) {
+        const item = order[i];
+        const row = tbody.insertRow(-1);
+
+        var cell1 = row.insertCell(0);
+        cell1.style.width = "100%"; 
+        cell1.style.fontWeight = "bold";
+        cell1.style.fontSize = "16px";
+        cell1.innerHTML = item.name;
+        
+        var cell2 = row.insertCell(1);
+        cell2.style.textAlign = "right";
+        cell2.style.fontWeight = "bold";
+        cell2.style.fontSize = "16px";
+        cell2.style.whiteSpace = "nowrap";
+        cell2.style.paddingLeft = "20px"; 
+        cell2.style.paddingRight = "15px";
+        cell2.innerHTML = item.price;
+        
+        var cell3 = row.insertCell(2);
+        cell3.style.textAlign = "right";
+        cell3.style.width = "40px"; 
+        cell3.innerHTML = "<img src='./Img/RemoveItem.png' width=30 style='cursor:pointer;' onclick='RemoveItem(" + i + ")'>";
+    }
+}
+
+function ProcessOrder() {
+    if (order.length === 0) {
+        alert("No items added");
+        return;
+    }
+
+    if (confirm("Proceed with Order?")) {
+        var CustomerName = prompt("Please enter your name:");
+        if (!CustomerName || CustomerName.trim() === "") {
+            alert("Name is required.");
+            return;
+        }
+
+        var CustomerAddress = prompt("Please enter your address:");
+        if (!CustomerAddress || CustomerAddress.trim() === "") {
+            alert("Address is required.");
+            return;
+        }
+
+        var itemsList = order.map(function(item) {
+            return item.name;
+        });
+
+        var orderText = "Name: " + CustomerName + "\n" + "Address: " + CustomerAddress + "\n\n" + itemsList.join("\n");
+        var link = document.createElement('a');
+        link.href = Configuration.Whatsapp + "?text=" + encodeURIComponent(orderText);
+        link.click();
+    }
+}
+
+function BackButton() {
+    ShowAllRestaurant();
+    scroll(0,0);
+}
 
