@@ -3,21 +3,27 @@ var firsttime = true;
 var order = [];
 
 function ShowConfiguration(){
-	var t = "<table>";
-	t = t + "<tr><td style='width:100%;text-align:center'><img src='./Img/Logo.jpg' width='150' height='100'></td></tr>";
-	t = t + "<tr><td style='width:100%;text-align:center'><p style='font-size:18px;font-weight:bold'>" + Configuration.Name + "</p></td></tr>";
-	t = t + "<tr><td style='width:100%;text-align:center'><p style='font-size:18px;font-weight:bold'>" + Configuration.Description + "</p></td></tr>";
-	t = t + "<tr><td style='width:100%;text-align:center'><p style='font-size:18px;font-weight:bold'>" + Configuration.Address + "</p></td></tr>";
-	t = t + "<tr><td style='width:100%;text-align:center'><p style='font-size:18px;font-weight:bold'>" + Configuration.Phone + "</p></td></tr>";
-	t = t + "<tr><td style='width:100%;text-align:center'><a href='" + Configuration.Whatsapp + "' target='_blank'><img src='./Img/Whatsapp.png' width=40 height=40></a>&nbsp;&nbsp;&nbsp;<a href='" + Configuration.Facebook + "' target='_blank'><img src='./Img/Facebook.png' width=40 height=40></a>&nbsp;&nbsp;&nbsp;<a href='" + Configuration.Instagram + "' target='_blank'><img src='./Img/Instagram.png' width=40 height=40></a>&nbsp;&nbsp;&nbsp;<a href='" + Configuration.Tiktok + "' target='_blank'><img src='./Img/Tiktok.png' width=40 height=40></a>&nbsp;&nbsp;&nbsp;<a href='" + Configuration.GoogleMaps + "' target='_blank'><img src='./Img/GoogleMaps.png' width=40 height=40></a></td></tr>";
-	t = t + "</table>";
-	document.getElementById('Configuration').innerHTML=t;
+	var upperpart = "<table style='width:100%; border-collapse: collapse; border-spacing: 0;'>";
+	upperpart += "<tr><td style='width:100%; text-align:center; padding:0;'><img src='./Img/Logo.jpg' width='150' height='100' style='display:inline-block; vertical-align:middle;'></td></tr>";
+	upperpart += "<tr><td style='width:100%; text-align:center;'><div style='font-size:18px; font-weight:bold; margin:0; padding:2px 0; line-height:1.2;'>" + Configuration.Name + "</div></td></tr>";
+	upperpart += "<tr><td style='width:100%; text-align:center;'><div style='font-size:18px; font-weight:bold; margin:0; padding:2px 0; line-height:1.2;'>" + Configuration.Description + "</div></td></tr>";
+	upperpart += "<tr><td style='width:100%; text-align:center;'><div style='font-size:18px; font-weight:bold; margin:0; padding:2px 0; line-height:1.2;'>" + Configuration.Address + "</div></td></tr>";
+	upperpart += "<tr><td style='width:100%; text-align:center;'><div style='font-size:18px; font-weight:bold; margin:0; padding:2px 0; line-height:1.2;'>" + Configuration.Phone + "</div></td></tr>";
+	upperpart += "<tr><td style='width:100%; text-align:center; padding-top:10px;'>";
+	upperpart += "<a href='" + Configuration.Whatsapp + "' target='_blank'><img src='./Img/Whatsapp.png' width=40 height=40 style='vertical-align:middle'></a>&nbsp;&nbsp;&nbsp;";
+	upperpart += "<a href='" + Configuration.Facebook + "' target='_blank'><img src='./Img/Facebook.png' width=40 height=40 style='vertical-align:middle'></a>&nbsp;&nbsp;&nbsp;";
+	upperpart += "<a href='" + Configuration.Instagram + "' target='_blank'><img src='./Img/Instagram.png' width=40 height=40 style='vertical-align:middle'></a>&nbsp;&nbsp;&nbsp;";
+	upperpart += "<a href='" + Configuration.Tiktok + "' target='_blank'><img src='./Img/Tiktok.png' width=40 height=40 style='vertical-align:middle'></a>&nbsp;&nbsp;&nbsp;";
+	upperpart += "<a href='" + Configuration.GoogleMaps + "' target='_blank'><img src='./Img/GoogleMaps.png' width=40 height=40 style='vertical-align:middle'></a>";
+	upperpart += "</td></tr>";
+	upperpart += "</table>";
+	document.getElementById('Configuration').innerHTML=upperpart;
 }
 
 function ShowAllPOS() {
 	ShowConfiguration();
 	var CategoriesAndItemsLength = CategoriesAndItems.length;
-	var t = "<table>";
+	var t = "<table style='width:100%; border-collapse: collapse; border-spacing: 0;'>";
 	for (var CategoryID = 0; CategoryID < CategoriesAndItemsLength; CategoryID++){
 		var Items = CategoriesAndItems[CategoryID].Items;
 		var ItemsLength = Items.length;
@@ -34,7 +40,7 @@ function ShowAllPOS() {
 
 function ShowFilteredDescription(e,Search_Value) {
 	var CategoriesAndItemsLength = CategoriesAndItems.length;
-	var t = "<table>";
+	var t = "<table style='width:100%; border-collapse: collapse; border-spacing: 0;'>";
 	for (var CategoryID = 0; CategoryID < CategoriesAndItemsLength; CategoryID++){
 		var Items = CategoriesAndItems[CategoryID].Items;
 		var ItemsLength = Items.length;
@@ -76,7 +82,7 @@ function ShowFilteredBarcode(e,Search_Value) {
 	if (e.keyCode !=13)
 		return;
 	var CategoriesAndItemsLength = CategoriesAndItems.length;
-	var t = "<table>";
+	var t = "<table style='width:100%; border-collapse: collapse; border-spacing: 0;'>";
 	for (var CategoryID = 0; CategoryID < CategoriesAndItemsLength; CategoryID++){
 		var Items = CategoriesAndItems[CategoryID].Items;
 		var ItemsLength = Items.length;
@@ -119,13 +125,19 @@ function ShowAllRestaurant() {
     upperpart += "<div style='flex: 1; overflow-y: auto; padding: 10px;'>";
 	
 	// Show Configuration
-	upperpart += "<table style='width:100%'>";
-	upperpart += "<tr><td style='width:100%;text-align:center'><img src='./Img/Logo.jpg' width='150' height='100'></td></tr>";
-	upperpart += "<tr><td style='width:100%;text-align:center'><p style='font-size:18px;font-weight:bold'>" + Configuration.Name + "</p></td></tr>";
-	upperpart += "<tr><td style='width:100%;text-align:center'><p style='font-size:18px;font-weight:bold'>" + Configuration.Description + "</p></td></tr>";
-	upperpart += "<tr><td style='width:100%;text-align:center'><p style='font-size:18px;font-weight:bold'>" + Configuration.Address + "</p></td></tr>";
-	upperpart += "<tr><td style='width:100%;text-align:center'><p style='font-size:18px;font-weight:bold'>" + Configuration.Phone + "</p></td></tr>";
-	upperpart += "<tr><td style='width:100%;text-align:center'><a href='" + Configuration.Whatsapp + "' target='_blank'><img src='./Img/Whatsapp.png' width=40 height=40></a>&nbsp;&nbsp;&nbsp;<a href='" + Configuration.Facebook + "' target='_blank'><img src='./Img/Facebook.png' width=40 height=40></a>&nbsp;&nbsp;&nbsp;<a href='" + Configuration.Instagram + "' target='_blank'><img src='./Img/Instagram.png' width=40 height=40></a>&nbsp;&nbsp;&nbsp;<a href='" + Configuration.Tiktok + "' target='_blank'><img src='./Img/Tiktok.png' width=40 height=40></a>&nbsp;&nbsp;&nbsp;<a href='" + Configuration.GoogleMaps + "' target='_blank'><img src='./Img/GoogleMaps.png' width=40 height=40></a></td></tr>";
+	upperpart += "<table style='width:100%; border-collapse: collapse; border-spacing: 0;'>";
+	upperpart += "<tr><td style='width:100%; text-align:center; padding:0;'><img src='./Img/Logo.jpg' width='150' height='100' style='display:inline-block; vertical-align:middle;'></td></tr>";
+	upperpart += "<tr><td style='width:100%; text-align:center;'><div style='font-size:18px; font-weight:bold; margin:0; padding:2px 0; line-height:1.2;'>" + Configuration.Name + "</div></td></tr>";
+	upperpart += "<tr><td style='width:100%; text-align:center;'><div style='font-size:18px; font-weight:bold; margin:0; padding:2px 0; line-height:1.2;'>" + Configuration.Description + "</div></td></tr>";
+	upperpart += "<tr><td style='width:100%; text-align:center;'><div style='font-size:18px; font-weight:bold; margin:0; padding:2px 0; line-height:1.2;'>" + Configuration.Address + "</div></td></tr>";
+	upperpart += "<tr><td style='width:100%; text-align:center;'><div style='font-size:18px; font-weight:bold; margin:0; padding:2px 0; line-height:1.2;'>" + Configuration.Phone + "</div></td></tr>";
+	upperpart += "<tr><td style='width:100%; text-align:center; padding-top:10px;'>";
+	upperpart += "<a href='" + Configuration.Whatsapp + "' target='_blank'><img src='./Img/Whatsapp.png' width=40 height=40 style='vertical-align:middle'></a>&nbsp;&nbsp;&nbsp;";
+	upperpart += "<a href='" + Configuration.Facebook + "' target='_blank'><img src='./Img/Facebook.png' width=40 height=40 style='vertical-align:middle'></a>&nbsp;&nbsp;&nbsp;";
+	upperpart += "<a href='" + Configuration.Instagram + "' target='_blank'><img src='./Img/Instagram.png' width=40 height=40 style='vertical-align:middle'></a>&nbsp;&nbsp;&nbsp;";
+	upperpart += "<a href='" + Configuration.Tiktok + "' target='_blank'><img src='./Img/Tiktok.png' width=40 height=40 style='vertical-align:middle'></a>&nbsp;&nbsp;&nbsp;";
+	upperpart += "<a href='" + Configuration.GoogleMaps + "' target='_blank'><img src='./Img/GoogleMaps.png' width=40 height=40 style='vertical-align:middle'></a>";
+	upperpart += "</td></tr>";
 	upperpart += "</table>";
 
 	// Show Categories
@@ -139,9 +151,9 @@ function ShowAllRestaurant() {
             upperpart += "</tr>";
             
             upperpart += "<tr>";
-            upperpart += "<td style='text-align:center;'><p style='font-size:20px;font-weight:bold;cursor:pointer' id='" + i + "' onclick='ShowItems(this.id)'>" + CategoriesAndItems[i].Category + "</p></td>";
+            upperpart += "<td style='text-align:center;'><div style='font-size:20px;font-weight:bold;cursor:pointer' id='" + i + "' onclick='ShowItems(this.id)'>" + CategoriesAndItems[i].Category + "</div></td>";
             upperpart += "<td>&nbsp;</td>";
-            upperpart += "<td style='text-align:center;'><p style='font-size:20px;font-weight:bold;cursor:pointer' id='" + (i + 1) + "' onclick='ShowItems(this.id)'>" + CategoriesAndItems[i+1].Category + "</p></td>";
+            upperpart += "<td style='text-align:center;'><div style='font-size:20px;font-weight:bold;cursor:pointer' id='" + (i + 1) + "' onclick='ShowItems(this.id)'>" + CategoriesAndItems[i+1].Category + "</div></td>";
             upperpart += "</tr>";
             upperpart += "<tr><td colspan='3'>&nbsp;</td></tr>";
         } else {
@@ -150,7 +162,7 @@ function ShowAllRestaurant() {
             upperpart += "<td>&nbsp;</td><td>&nbsp;</td>";
             upperpart += "</tr>";
             upperpart += "<tr>";
-            upperpart += "<td style='text-align:center;'><p style='font-size:20px;font-weight:bold;cursor:pointer' id='" + i + "' onclick='ShowItems(this.id)'>" + CategoriesAndItems[i].Category + "</p></td>";
+            upperpart += "<td style='text-align:center;'><div style='font-size:20px;font-weight:bold;cursor:pointer' id='" + i + "' onclick='ShowItems(this.id)'>" + CategoriesAndItems[i].Category + "</div></td>";
             upperpart += "</tr>";
         }
     }
@@ -198,12 +210,12 @@ function ShowItems(CategoryID) {
     var Items = CategoriesAndItems[CategoryID].Items;
     var upperpart2 = "<div id='upperpart' style='flex: 0 0 65%; height: 65%; overflow-y: auto; border-bottom: 2px solid #ddd; box-sizing: border-box;'>";
 	upperpart2 += "<div style='flex: 1; overflow-y: auto; padding: 10px;'>";
-	upperpart2 += "<table style='width:100%;margin-bottom:20px;'><tr><td style='text-align:left;'><p style='font-size:26px;font-weight:bold;color:Red;margin:0;'>" + CategoriesAndItems[CategoryID].Category + "</p></td><td style='text-align:right;'><img src='./Img/Back.png' width=40 height=40 style='cursor:pointer;' onclick='BackButton()'></td></tr></table>";
-	upperpart2 += "<table style='width:100%; border-collapse:collapse; margin-bottom:10px; background:white;'>"
+	upperpart2 += "<table style='width:100%;border-collapse: collapse; border-spacing: 0;'><tr><td style='text-align:left;'><p style='font-size:26px;font-weight:bold;color:Red;margin:0;'>" + CategoriesAndItems[CategoryID].Category + "</p></td><td style='text-align:right;'><img src='./Img/Back.png' width=40 height=40 style='cursor:pointer;' onclick='BackButton()'></td></tr></table>";
+	upperpart2 += "<table style='width:100%;border-collapse: collapse; border-spacing: 0;'>"
 	for (var i = 0; i < Items.length; i++) {
 		var safeName = Items[i].Item.replace(/'/g, "\\'");
 		var safePrice = (Items[i].Price + " " + Items[i].Currency).replace(/'/g, "\\'");
-		upperpart2 += "<tr><td style='width:150px; height:150px; border:3px solid #ccc; padding:0; background:#f8f8f8; vertical-align:middle;'><img src='" + Items[i].ItemOnlinePicture + "' style='width:150px; height:150px; object-fit:contain; display:block;'></td><td style='width:calc(100% - 150px); height:150px; border:3px solid #ccc; padding:10px 10px 40px 10px; vertical-align:top; position:relative;'><div style='height:105px; overflow-y:auto; scrollbar-width:none; -ms-overflow-style:none;'>" + (Items[i].Recommended == "False" ? "" : "<div style='font-size:16px; color:Red; font-weight:bold; text-align:center; margin-bottom:8px; width:100%;'>&#9733; Popular &#9733;</div>") + (Items[i].Barcode ? "<div style='font-size:12px; color:Blue;'>" + Items[i].Barcode + "</div>" : "") + "<div style='font-size:16px; font-weight:bold; line-height:1.2;'>" + safeName + "</div><div style='color:gray; font-size:14px; line-height:1.2; margin-top:4px;'>" + Items[i].Description + "</div></div><div style='position:absolute; bottom:10px; left:10px; right:10px; display:flex; justify-content:space-between; align-items:center; background:white; padding-top:5px;'><span style='color:green; font-size:16px; font-weight:bold;'>" + safePrice + "</span><button onclick=\"AddItem('" + safeName + "', '" + safePrice + "')\" style='cursor:pointer; background-color:#28a745; color:white; border:none; border-radius:50%; width:35px; height:35px; font-size:22px; font-weight:bold; display:flex; align-items:center; justify-content:center; line-height:1; box-shadow: 0 2px 4px rgba(0,0,0,0.1);'>+</button></div></td></tr>";
+		upperpart2 += "<tr><td style='width:150px; height:150px; border:3px solid #ccc; padding:0; background:#f8f8f8; vertical-align:middle;'><img src='" + Items[i].ItemOnlinePicture + "' style='width: 100%; height: 100%;object-fit: cover;display: block;'></td><td style='width:calc(100% - 150px); height:150px; border:3px solid #ccc; padding:0px 0px 0px 10px; vertical-align:top; position:relative;'><div style='height:105px; overflow-y:auto; scrollbar-width:none; -ms-overflow-style:none;'>" + (Items[i].Recommended == "False" ? "" : "<div style='font-size:16px; color:Red; font-weight:bold; text-align:center; width:100%;'>&#9733; Popular &#9733;</div>") + "<div style='font-size:16px; font-weight:bold; line-height:1.2;padding:5px 0px 0px 0px;'>" + safeName + "</div><div style='color:gray; font-size:14px; line-height:1.2;padding:5px 0px 0px 0px'>" + Items[i].Description + "</div></div><div style='position:absolute; bottom:10px; left:10px; right:10px; display:flex; justify-content:space-between; align-items:center; background:white;'><span style='color:green; font-size:16px; font-weight:bold;'>" + safePrice + "</span><button onclick=\"AddItem('" + safeName + "', '" + safePrice + "')\" style='cursor:pointer; background-color:#28a745; color:white; border:none; border-radius:50%; width:35px; height:35px; font-size:22px; font-weight:bold; display:flex; align-items:center; justify-content:center; line-height:1; box-shadow: 0 2px 4px rgba(0,0,0,0.1);'>+</button></div></td></tr>";
 	}
     upperpart2 += "</table>";
 	upperpart2 += "</div>";
