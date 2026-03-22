@@ -199,11 +199,11 @@ function ShowItems(CategoryID) {
     var upperpart2 = "<div id='upperpart' style='flex: 0 0 65%; height: 65%; overflow-y: auto; border-bottom: 2px solid #ddd; box-sizing: border-box;'>";
 	upperpart2 += "<div style='flex: 1; overflow-y: auto; padding: 10px;'>";
 	upperpart2 += "<table style='width:100%;margin-bottom:20px;'><tr><td style='text-align:left;'><p style='font-size:26px;font-weight:bold;color:Red;margin:0;'>" + CategoriesAndItems[CategoryID].Category + "</p></td><td style='text-align:right;'><img src='./Img/Back.png' width=40 height=40 style='cursor:pointer;' onclick='BackButton()'></td></tr></table>";
-	upperpart2 += "<table style='width:100%; border-collapse:collapse; margin-bottom:20px; background:white;'>"
+	upperpart2 += "<table style='width:100%; border-collapse:collapse; margin-bottom:10px; background:white;'>"
 	for (var i = 0; i < Items.length; i++) {
 		var safeName = Items[i].Item.replace(/'/g, "\\'");
 		var safePrice = (Items[i].Price + " " + Items[i].Currency).replace(/'/g, "\\'");
-		upperpart2 += "<tr><td style='width:40%; text-align:center; border:1px solid #ccc;'><img src='" + Items[i].ItemOnlinePicture + "' style='width:100%;'></td><td style='width:60%; text-align:center; border:1px solid #ccc; padding:15px;'>" + (Items[i].Recommended == "False" ? "" : "<p><span style='font-size:18px; color:Red;'>&#9733;&#9733;&#9733; Popular &#9733;&#9733;&#9733;</span></p>") + "<p style='font-size:14px; color:Blue;'>" + Items[i].Barcode + "</p><p style='font-size:20px; font-weight:bold;'>" + safeName + "</p><p><span style='color:gray; font-size:16px;'>" + Items[i].Description + "</span></p><p><span style='color:green; font-size:20px; font-weight:bold;'>" + safePrice + "</span></p><p><img src='Img/AddItem.png' width='50' style='cursor:pointer;' onclick=\"AddItem('" + safeName + "', '" + safePrice + "')\"></p></td></tr>";
+		upperpart2 += "<tr><td style='width:150px; height:150px; border:1px solid #ccc; padding:0; background:#f8f8f8; vertical-align:middle;'><img src='" + Items[i].ItemOnlinePicture + "' style='width:150px; height:150px; object-fit:contain; display:block;'></td><td style='width:calc(100% - 150px); height:150px; border:1px solid #ccc; padding:10px 10px 40px 10px; vertical-align:top; position:relative;'><div style='height:105px; overflow-y:auto; scrollbar-width:none; -ms-overflow-style:none;'>" + (Items[i].Recommended == "False" ? "" : "<div style='font-size:16px; color:Red; font-weight:bold; text-align:center; margin-bottom:8px; width:100%;'>&#9733; Popular &#9733;</div>") + (Items[i].Barcode ? "<div style='font-size:12px; color:Blue;'>" + Items[i].Barcode + "</div>" : "") + "<div style='font-size:16px; font-weight:bold; line-height:1.2;'>" + safeName + "</div><div style='color:gray; font-size:14px; line-height:1.2; margin-top:4px;'>" + Items[i].Description + "</div></div><div style='position:absolute; bottom:10px; left:10px; right:10px; display:flex; justify-content:space-between; align-items:center; background:white; padding-top:5px;'><span style='color:green; font-size:16px; font-weight:bold;'>" + safePrice + "</span><button onclick=\"AddItem('" + safeName + "', '" + safePrice + "')\" style='cursor:pointer; background-color:#28a745; color:white; border:none; border-radius:50%; width:35px; height:35px; font-size:22px; font-weight:bold; display:flex; align-items:center; justify-content:center; line-height:1; box-shadow: 0 2px 4px rgba(0,0,0,0.1);'>+</button></div></td></tr>";
 	}
     upperpart2 += "</table>";
 	upperpart2 += "</div>";
@@ -262,8 +262,8 @@ function RenderOrderTable() {
         
         var cell3 = row.insertCell(2);
         cell3.style.textAlign = "right";
-        cell3.style.width = "40px"; 
-        cell3.innerHTML = "<img src='./Img/RemoveItem.png' width=30 style='cursor:pointer;' onclick='RemoveItem(" + i + ")'>";
+        cell3.style.width = "40px";
+		cell3.innerHTML = "<button onclick='RemoveItem(" + i + ")' style='cursor:pointer; background-color:#dc3545; color:white; border:none; border-radius:50%; width:20px; height:20px; font-size:22px; font-weight:bold; display:flex; align-items:center; justify-content:center; line-height:1; box-shadow: 0 2px 4px rgba(0,0,0,0.1);'>&minus;</button>";
     }
 }
 
