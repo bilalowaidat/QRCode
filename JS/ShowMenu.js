@@ -172,18 +172,12 @@ function ShowAllRestaurant() {
 
 	// Show the current order
 	lowerpart = "<div id='lowerpart' style='flex: 0 0 35%; height: 35%; display: flex; flex-direction: column; background: #f9f9f9; box-sizing: border-box; overflow: hidden; border-top: 2px solid #ccc;'>";
-
-	// The Handle Bar (Click this to minimize/maximize)
 	lowerpart += "<div onclick='ToggleCart()' style='width:100%; height:30px; background:#eee; display:flex; justify-content:center; align-items:center; cursor:pointer; border-bottom:1px solid #ddd;'>";
 	lowerpart += "<div style='width:40px; height:5px; background:#999; border-radius:10px;'></div>";
 	lowerpart += "</div>";
-
-	// The scrolling area
 	lowerpart += "<div style='flex: 1; overflow-y: auto; padding: 0px 10px 10px 10px;'>";
 	lowerpart += "<table id='tblOrderInfo' style='width:100%; border-collapse: separate; border-spacing: 0 5px;'><tbody></tbody></table>";
 	lowerpart += "</div>";
-
-	// The Process Button area
 	lowerpart += "<div style='padding: 10px; border-top: 1px solid #ddd; background: white; text-align: center; flex-shrink: 0;'>";
 	lowerpart += "<img src='./Img/ProcessOrder.png' width=80 height=80 style='cursor:pointer;' onclick='ProcessOrder()'>";
 	lowerpart += "</div>";
@@ -242,8 +236,10 @@ function AddItem(name, priceWithCurrency) {
 }
 
 function RemoveItem(index) {
-    order.splice(index, 1);
-    RenderOrderTable();
+    if (confirm("Remove " + order[index].name + " from order?")) {
+        order.splice(index, 1);
+        RenderOrderTable();
+    }
 }
 
 function RenderOrderTable() {
@@ -257,6 +253,11 @@ function RenderOrderTable() {
         const item = order[i];
         const row = tbody.insertRow(-1);
 
+		let index = i; 
+		row.onclick = function() {
+			RemoveItem(index);
+		};
+
         var cell1 = row.insertCell(0);
         cell1.style.width = "100%"; 
         cell1.style.fontWeight = "bold";
@@ -269,13 +270,8 @@ function RenderOrderTable() {
         cell2.style.fontSize = "16px";
         cell2.style.whiteSpace = "nowrap";
         cell2.style.paddingLeft = "20px"; 
-        cell2.style.paddingRight = "15px";
+        cell2.style.paddingRight = "5px";
         cell2.innerHTML = item.price;
-        
-        var cell3 = row.insertCell(2);
-        cell3.style.textAlign = "right";
-        cell3.style.width = "40px";
-		cell3.innerHTML = "<button onclick='RemoveItem(" + i + ")' style='cursor:pointer; background-color:#dc3545; color:white; border:none; border-radius:50%; width:20px; height:20px; font-size:22px; font-weight:bold; display:flex; align-items:center; justify-content:center; line-height:1; box-shadow: 0 2px 4px rgba(0,0,0,0.1);'>&minus;</button>";
     }
 }
 
