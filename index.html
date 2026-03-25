@@ -298,12 +298,151 @@
 
     <script>
         var order = [];
+        var isExiting = false;
+        history.pushState({ trap: true }, null, window.location.href);
+        window.addEventListener('popstate', function (event) {
+            if (isExiting) return;
+            if (confirm("Close Menu?")) {
+                isExiting = true;
+                history.back(); 
+            } else
+                history.pushState({ trap: true }, null, window.location.href);
+        });
 
-        function InitializeApp() {
+        window.addEventListener('beforeunload', function (e) {
+            if (!isExiting)
+                e.preventDefault();
+        });
+
+        function GetConfiguration() {
             document.getElementById('rest-name').innerText = Configuration.Name;
             document.getElementById('rest-desc').innerText = Configuration.Description; 
             document.getElementById('rest-address').innerText = Configuration.Address;
             document.getElementById('rest-phone').innerText = Configuration.Phone;
+        }
+
+        function InitializeApp() {
+            GetConfiguration();
+            if (Configuration.QRCodeType === "POS")
+                ShowAllPOS();
+            else
+                ShowAllRestaurant();
+        }
+
+        function ShowAllPOS() {
+            var html = `
+                <div style="margin: -12px -12px -12px -12px; padding: 6px 10px; background: #f8f9fa; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid #eee;">
+                    <div style="display: flex; gap: 6px; align-items: center;">
+                        <input type="text" id="txtSearchDescription" placeholder="Search Name..." 
+                            style="flex: 1; padding: 8px 12px; margin: 0; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; outline: none;"
+                            onkeyup="ShowFilteredDescription(event, this.value)">
+                        
+                        <input type="text" id="txtSearchBarcode" placeholder="Barcode..." 
+                            style="width: 35%; padding: 8px 12px; margin: 0; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; outline: none;"
+                            onchange="ShowFilteredBarcode(event, this.value)"
+                            onkeydown="if(event.keyCode==13) ShowFilteredBarcode(event, this.value)">
+                    </div>
+                </div>
+                <div id="tblCategoriesAndItems"></div>`;
+
+            document.getElementById('menu-content').innerHTML = html;
+            document.getElementById('lowerpart').style.display = 'none';
+
+            var t = "<table style='width:100%; border-collapse: collapse;'>";
+            for (var CategoryID = 0; CategoryID < CategoriesAndItems.length; CategoryID++){
+                var Items = CategoriesAndItems[CategoryID].Items;
+                t += "<tr><td><p style='font-size:18px; font-weight:bold; color:#ff4757; margin: 20px 0px 0px 0px; border-bottom: 2px solid #f1f2f6;'>" + CategoriesAndItems[CategoryID].Category + "</p></td></tr>";
+                for (var i = 0; i < Items.length; i++){
+                    var sName = Items[i].Item.replace(/'/g, "\\'");
+                    var sPrice = (Items[i].Price + " " + Items[i].Currency).replace(/'/g, "\\'");
+                    t += `<tr style='cursor: pointer;' onclick="AddItem('${sName}', '${sPrice}')">
+                            <td style='padding: 4px; vertical-align: top;'>
+                                <div style='display: flex; justify-content: space-between; align-items: flex-start;'>
+                                    <span style='font-size: 15px; font-weight: 600; color: #2d3436; padding-right: 10px;'>${Items[i].Item}</span>
+                                    <span style='font-size: 15px; font-weight: 800; color: #00b894; white-space: nowrap;'>${Items[i].Price} <span style='font-size: 15px;'>${Items[i].Currency}</span></span>
+                                </div>
+                            </td>
+                        </tr>`;
+                }
+            }
+            t += "</table>";
+            document.getElementById('tblCategoriesAndItems').innerHTML = t;
+        }
+
+        function ShowFilteredDescription(e, Search_Value) {
+            var val = Search_Value.toUpperCase();
+            var t = "<table style='width:100%; border-collapse: collapse;'>";
+            for (var CategoryID = 0; CategoryID < CategoriesAndItems.length; CategoryID++){
+                var catName = CategoriesAndItems[CategoryID].Category.toUpperCase();
+                var Items = CategoriesAndItems[CategoryID].Items;
+                var filteredItems = catName.includes(val) 
+                    ? Items 
+                    : Items.filter(itm => itm.Item.toUpperCase().includes(val) || itm.Barcode.toUpperCase().includes(val));
+                
+                if (filteredItems.length > 0) {
+                    t += "<tr><td><p style='font-size:18px; font-weight:bold; color:#ff4757; margin: 25px 0 10px 0; border-bottom: 2px solid #f1f2f6;'>" + CategoriesAndItems[CategoryID].Category + "</p></td></tr>";
+                    filteredItems.forEach(itm => {
+                        var sName = itm.Item.replace(/'/g, "\\'");
+                        var sPrice = (itm.Price + " " + itm.Currency).replace(/'/g, "\\'");
+                        t += `<tr style='border-bottom: 1px solid #eee; cursor: pointer;' onclick="AddItem('${sName}', '${sPrice}')">
+                                <td style='padding: 12px 0; vertical-align: top;'>
+                                    <div style='display: flex; justify-content: space-between; align-items: flex-start;'>
+                                        <span style='font-size: 16px; font-weight: 600; color: #2d3436; padding-right: 10px;'>${itm.Item}</span>
+                                        <span style='font-size: 16px; font-weight: 800; color: #00b894; white-space: nowrap;'>${itm.Price} <span style='font-size: 16px;'>${itm.Currency}</span></span>
+                                    </div>
+                                    ${itm.Description !== "Description" ? `<div style='font-size: 12px; color: #636e72; margin-top: 4px;'>${itm.Description}</div>` : ''}
+                                </td>
+                              </tr>`;
+                    });
+                }
+            }
+            t += "</table>";
+            document.getElementById('tblCategoriesAndItems').innerHTML = t;
+            if (e.keyCode == 13) {
+                document.getElementById('txtSearchDescription').value = "";
+                document.getElementById('txtSearchBarcode').value = "";
+            }
+        }
+
+        function ShowFilteredBarcode(e, Search_Value) {
+            if (Search_Value === "") {
+                ShowAllPOS();
+                return;
+            }
+            var val = Search_Value.toUpperCase();
+            var t = "<table style='width:100%; border-collapse: collapse;'>";
+            var foundCount = 0;
+            
+            for (var CategoryID = 0; CategoryID < CategoriesAndItems.length; CategoryID++){
+                var Items = CategoriesAndItems[CategoryID].Items;
+                var filteredItems = Items.filter(itm => itm.Barcode.toUpperCase() === val || itm.Barcode.toUpperCase().includes(val));
+                
+                if (filteredItems.length > 0) {
+                    foundCount += filteredItems.length;
+                    t += "<tr><td><p style='font-size:18px; font-weight:bold; color:#ff4757; margin: 25px 0 10px 0; border-bottom: 2px solid #f1f2f6;'>" + CategoriesAndItems[CategoryID].Category + "</p></td></tr>";
+                    filteredItems.forEach(itm => {
+                        var sName = itm.Item.replace(/'/g, "\\'");
+                        var sPrice = (itm.Price + " " + itm.Currency).replace(/'/g, "\\'");
+                        t += `<tr style='border-bottom: 1px solid #eee; cursor: pointer;' onclick="AddItem('${sName}', '${sPrice}')">
+                                <td style='padding: 12px 0; vertical-align: top;'>
+                                    <div style='display: flex; justify-content: space-between; align-items: flex-start;'>
+                                        <span style='font-size: 16px; font-weight: 600; color: #2d3436; padding-right: 10px;'>${itm.Item}</span>
+                                        <span style='font-size: 16px; font-weight: 800; color: #00b894; white-space: nowrap;'>${itm.Price} <span style='font-size: 16px;'>${itm.Currency}</span></span>
+                                    </div>
+                                </td>
+                              </tr>`;
+                    });
+                }
+            }
+            t += "</table>";
+            document.getElementById('tblCategoriesAndItems').innerHTML = t;
+            document.getElementById('txtSearchDescription').value = "";
+            document.getElementById('txtSearchBarcode').value = "";
+            document.getElementById('txtSearchBarcode').focus();
+        }
+
+        function InitializeRestaurantMenu() {
+            GetConfiguration();
             ShowAllRestaurant(); 
         }
 
@@ -389,9 +528,10 @@
             tbody.innerHTML = ""; 
             order.forEach((item, index) => {
                 const row = tbody.insertRow(-1);
+                
                 row.className = "cart-row-item";
                 row.onclick = () => RemoveItem(index);
-                row.innerHTML = `<td style='padding:6px 0; font-size:16px; border-bottom:1px solid #f9f9f9;'>${item.name}</td>
+                row.innerHTML = `<td style='cursor: pointer;padding:6px 0; font-size:16px; border-bottom:1px solid #f9f9f9;'>${item.name}</td>
                                  <td style='text-align:right; font-weight:700; color:#00b894; border-bottom:1px solid #f9f9f9;'>${item.price}</td>`;
             });
             document.getElementById('cart-badge').innerText = order.length;
@@ -404,7 +544,9 @@
             if (name && addr) {
                 var summary = order.map(i => `- ${i.name}`).join("\n");
                 var text = `*NEW ORDER*\nName: ${name}\nAddress: ${addr}\n\n*Items:*\n${summary}`;
-                window.location.href = Configuration.Whatsapp + "?text=" + encodeURIComponent(text);
+                isExiting = true; 
+		        window.location.href = Configuration.Whatsapp + "?text=" + encodeURIComponent(text);
+		        setTimeout(function() { isExiting = false; }, 1000);
             }
         }
 
